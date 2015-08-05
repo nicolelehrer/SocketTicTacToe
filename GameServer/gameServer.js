@@ -129,7 +129,7 @@ function disableAllButtons() {
 }
 
 function resetBoard() {
-	boardArray.length = 0;
+	setupBoard();
 	console.log(boardArray);
 }
 
