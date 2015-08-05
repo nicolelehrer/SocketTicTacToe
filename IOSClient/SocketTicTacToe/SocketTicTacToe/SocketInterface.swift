@@ -11,7 +11,7 @@ import Socket_IO_Client_Swift
 
 //notes
 //experiments - using 'unowned' because I don't expect SocketInterface to be nil ...
-//[unowned self] is an array! because you can specify more than one capture value
+//[unowned self] is an array because you can specify more than one capture value
 
 public class SocketInterface : NSObject {
     
@@ -49,7 +49,7 @@ public class SocketInterface : NSObject {
                let winIndex = data?[2] as? Int {
                 
                 //not using winType and winIndex
-                self.handleUpdate(self.game.update(playerID, updatedMove:0, updatedState: .Won))
+                self.handleEndGame(self.game.update(playerID, updatedMove:0, updatedState: .Won))
             }
         }
         
@@ -69,7 +69,7 @@ public class SocketInterface : NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName("UpdateBoardNotification", object:game)
     }
     
-    func handleWin(game:Game){
+    func handleEndGame(game:Game){
         NSNotificationCenter.defaultCenter().postNotificationName("EndNotification", object:game)
     }
     

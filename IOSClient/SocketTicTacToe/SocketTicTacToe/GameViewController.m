@@ -92,6 +92,9 @@
     if([[notification object] isKindOfClass:[Game class]]){
         
         Game * game = [notification object];
+        
+        NSLog(@"gamestate is %ld", (long)game.gameState);
+        
         if(game.gameState == StateWon){
             [self endGameWithAWinner:game.currentPlayer ifWon:YES];
         }
@@ -178,6 +181,7 @@
 
 -(void)endGameWithAWinner:(NSString*)winner ifWon:(BOOL)aPlayerWon{
     
+    NSLog(@"endgamewithwinner called");
    // [self disableMoreMoves];
     
     NSString * message;
