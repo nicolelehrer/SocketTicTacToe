@@ -31,12 +31,14 @@
     
     [super viewDidLoad];
     
+
+    
     self.gamePieceController = [[GamePieceController alloc] init];
     
     self.gamePieceButtons = [[NSMutableArray alloc] init];
     [self createButtonMatrixWithRowCount:3 andColumnCount:3];
     [self shouldEnableGameButtonsWithFlag:NO];
-    
+    	
     self.socket = [[SocketInterface alloc] init];
     [self.socket startConnection];
     
@@ -199,13 +201,17 @@
 
 -(void)updateViewWithMessage:(NSString*)message{
     
-    CGRect referenceFrame = [[self.gamePieceButtons objectAtIndex:8] frame];
+    CGRect referenceFrame = [[self.gamePieceButtons objectAtIndex:7] frame];
     
-    float labelWidth = 300;
+    float labelWidth = 250;
     float labelHeight = 50;
-    float vertSpaceAfterReferenceFrame = 100;
+    float vertSpaceAfterReferenceFrame = 25;
     
-    CGRect labelFrame = CGRectMake(referenceFrame.origin.x-labelWidth/2, referenceFrame.origin.y+vertSpaceAfterReferenceFrame, labelWidth+100, labelHeight);
+    CGRect labelFrame = CGRectMake(referenceFrame.origin.x+referenceFrame.size.width/2-labelWidth/2,
+                                   referenceFrame.origin.y+referenceFrame.size.height+vertSpaceAfterReferenceFrame,
+                                   labelWidth,
+                                   labelHeight);
+    
     UILabel * label = [[UILabel alloc] initWithFrame:labelFrame];
     
     label.textAlignment = NSTextAlignmentCenter;
