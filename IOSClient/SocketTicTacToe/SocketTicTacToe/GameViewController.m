@@ -47,6 +47,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recieveEndGameNotification:) name:@"EndNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recieveResetGameNotification:) name:@"ResetNotification" object:nil];
+    
+    
 }
 
 
@@ -66,7 +68,7 @@
             }
             else{
                 aButton.enabled = NO;
-                aButton.alpha = 0.5;
+                aButton.alpha = 0.2;
             }
             
             //making this a separate operation because previous way of freezing screen is temporary
@@ -272,9 +274,9 @@
     playAgainButton.frame = buttonFrame;
     
     playAgainButton.tag = removeDuringPlay;
-    playAgainButton.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1];
+    playAgainButton.backgroundColor = [UIColor colorWithRed:1.0 green:0.5 blue:0.4 alpha:1];
     [playAgainButton setTitle:@"Exit" forState:UIControlStateNormal];
-    [playAgainButton setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    [playAgainButton setTitleColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0] forState:UIControlStateNormal];
     
     [self.view addSubview:playAgainButton];
     
