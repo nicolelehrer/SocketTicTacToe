@@ -11,3 +11,5 @@ To Do
 - better UI, missing status messages
 - handle quit for your client, don't kill server 
 - highlight winning three
+
+![alt tag](tictactoe.png "screen shot of current vs")
