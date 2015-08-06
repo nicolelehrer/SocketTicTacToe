@@ -20,6 +20,8 @@ public class Game: NSObject {
     public var currentPlayer = ""
     public var gameState:State = .Connecting
     public var lastMove = 0
+    public var winType = ""
+    public var winIndex = 0
 
     func update(updatedPlayer:String, updatedMove:Int, updatedState:State) -> Game {
         self.currentPlayer = updatedPlayer

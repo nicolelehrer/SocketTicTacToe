@@ -209,7 +209,7 @@
     
     [self updateViewWithMessage:message];
     [self addButtonToPlayAgain];
-    
+    [self addButtonToCancel];
 }
 
 -(void)updateViewWithMessage:(NSString*)message{
@@ -258,6 +258,29 @@
     [playAgainButton addTarget:self action:@selector(resetGame:) forControlEvents:UIControlEventTouchDown];
 }
 
+-(void)addButtonToCancel{ //right now other person can quit ur app for u
+    
+    CGRect referenceFrame = [[self.gamePieceButtons objectAtIndex:8] frame];
+    
+    float buttonWidth = 200;
+    float buttonHeight = 50;
+    float vertSpaceAfterReferenceFrame = 300;
+    
+    CGRect buttonFrame = CGRectMake(self.view.frame.size.width/2-buttonWidth/2, referenceFrame.origin.y+vertSpaceAfterReferenceFrame, buttonWidth, buttonHeight);
+    
+    UIButton * playAgainButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    playAgainButton.frame = buttonFrame;
+    
+    playAgainButton.tag = removeDuringPlay;
+    playAgainButton.backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1];
+    [playAgainButton setTitle:@"Exit" forState:UIControlStateNormal];
+    [playAgainButton setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    
+    [self.view addSubview:playAgainButton];
+    
+    [playAgainButton addTarget:self action:@selector(exit:) forControlEvents:UIControlEventTouchDown];
+}
+
 -(void)resetGame:(id)sender
 {
     for (UIView * view in self.view.subviews) {
@@ -270,7 +293,17 @@
     [self.socket sendMessage:@"reset" playerID:@"-" moveID:0];
 }
 
-
+-(void)exit:(id)sender
+{
+    for (UIView * view in self.view.subviews) {
+        if (view.tag==removeDuringPlay) {
+            [view removeFromSuperview];
+        }
+    }
+    
+    [self updateViewWithMessage:@"Goodbye!"];
+    [self.socket sendMessage:@"exit" playerID:@"-" moveID:0];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

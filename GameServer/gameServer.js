@@ -29,6 +29,10 @@ function addHandlers(){
 		socket.on("reset", function(playerID, moveID) {
 			resetBoard();			
 		})
+		socket.on("exit", function(){
+            io.sockets.emit("done")
+			process.exit(0)
+		})
 	})
 }
 
