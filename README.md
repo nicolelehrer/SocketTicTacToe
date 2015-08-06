@@ -8,7 +8,7 @@ Two player tic tac toe game
 
 To Do 
 
-- temporarily using alpha for communicating other player's move - update to better UI, missing some status messages
+- using alpha for too many things - update to better UI, missing some status messages
 - handle quit for your client, don't kill server 
 - highlight winning three
 
