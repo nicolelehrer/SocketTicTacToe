@@ -1,9 +1,9 @@
 "use strict";
 
 //SERVER SETUP --------------------------------
-//test2
 var portNum = 8900;
 var numPlayers = 0;
+var numPlayAgain = 0
 
 var app = require('http').createServer(function(request,response){
     console.log("adding player");
@@ -47,6 +47,11 @@ function sendUpdateToAllClients(playerID, moveID){
 	io.sockets.emit("updateBoard", playerID, moveID);  	 
 }
 
+function sendNewGame(){
+	console.log("start new game");
+	io.sockets.emit("newGame");  	 
+}
+
 
 //GAME LOGIC -------------------------------
 
@@ -58,6 +63,7 @@ function setupBoard(){
 	for(var i = 0; i < length; i++) {
 	    boardArray.push(placeHolder);
 	}
+	console.log(boardArray);
 }
 
 function updateBoard(playerID, moveID){
@@ -66,20 +72,26 @@ function updateBoard(playerID, moveID){
 	console.log(boardArray)
 	
 	//check for win
-	var results = checkValues(boardArray)
+	var results = checkForWin(boardArray)
 	if(results[0] == false){
+		//check if moves are left
+		if (!contains(placeHolder, boardArray)){
+			console.log("cat's game");
+			io.sockets.emit("cat");  	 
+			return;
+		}
+		//keep playing
 		return;
 	}
-	
+	//otherwise someone won
 	var winType = results[0];
 	var winIndex = results[1];
 	console.log(playerID + " won here: " + winType + " " + winIndex)
-	
 	io.sockets.emit("win", playerID, winType, winIndex);  	 
 }
 
 
-function checkValues(moveID){
+function checkForWin(moveID){
 	for (var i = 0; i < 3; i++) {			
 		if (compareThree(boardArray.slice(3*i, 3*i+3))){
 			return ["row", i];
@@ -97,6 +109,16 @@ function checkValues(moveID){
 	return [false];	
 }
 
+function contains(aStr, anArray){
+	for (var i = 0; i<anArray.length; i++){
+		if (anArray[i] == aStr){
+			return true;
+		}
+	}
+	return false;
+}
+
+
 function compareThree(arrOfThree){
 	if (arrOfThree[0] != "X" && arrOfThree[0] != "O"){
 		return false;
@@ -111,30 +133,15 @@ function compareThree(arrOfThree){
 }
 	
 
-function checkForMoreMoves(){
-	for (var i = 0; i < 9; i++) {
-
-	}
-	return false;
-}
-
-function addRedoButton() {
-	
-}
-
-function disableAllButtons() {
-	for(var i=0; i<9; i++){
-		// document.getElementById(i).disabled = true;
-	}	
-}
-
 function resetBoard() {
-	setupBoard();
-	console.log(boardArray);
-}
-
-function removeResetButton(){
-
+	numPlayAgain++;
+	console.log(numPlayAgain + " player agreed to play again")
+	if (numPlayAgain == 2){
+		boardArray.length = 0;		
+		setupBoard();
+		numPlayAgain = 0;
+		io.sockets.emit("reset");				
+	}
 }
 
 

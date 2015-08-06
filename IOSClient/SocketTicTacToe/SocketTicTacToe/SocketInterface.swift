@@ -53,9 +53,23 @@ public class SocketInterface : NSObject {
             }
         }
         
+        self.socket.on("cat") {data, ack in
+            self.handleEndGame(self.game.update("", updatedMove:0, updatedState: .Cat))
+        }
+        
+        self.socket.on("reset") {data, ack in
+            self.handleReset()
+        }
+        
+        
+        
+        
         self.socket.on("gameOver") {data, ack in
             exit(0)
         }
+        
+        
+        
         self.socket.onAny {
             println("Got event: \($0.event), with items: \($0.items)")
         }
@@ -71,6 +85,10 @@ public class SocketInterface : NSObject {
     
     func handleEndGame(game:Game){
         NSNotificationCenter.defaultCenter().postNotificationName("EndNotification", object:game)
+    }
+    
+    func handleReset(){
+        NSNotificationCenter.defaultCenter().postNotificationName("ResetNotification", object:nil)
     }
     
     @IBAction func closeServer(sender: AnyObject) {

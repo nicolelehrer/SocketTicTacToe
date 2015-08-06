@@ -30,15 +30,13 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
 
-    
     self.gamePieceController = [[GamePieceController alloc] init];
     
     self.gamePieceButtons = [[NSMutableArray alloc] init];
     [self createButtonMatrixWithRowCount:3 andColumnCount:3];
     [self shouldEnableGameButtonsWithFlag:NO];
-    	
+    
     self.socket = [[SocketInterface alloc] init];
     [self.socket startConnection];
     
@@ -47,6 +45,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recieveUpdateBoard:) name:@"UpdateBoardNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recieveEndGameNotification:) name:@"EndNotification" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recieveResetGameNotification:) name:@"ResetNotification" object:nil];
 }
 
 
@@ -100,9 +100,21 @@
         if(game.gameState == StateWon){
             [self endGameWithAWinner:game.currentPlayer ifWon:YES];
         }
-//        else{
-//            [self endGameWithAWinner:game.currentPlayer ifWon:NO];
-//        }
+        else{
+            [self endGameWithAWinner:game.currentPlayer ifWon:NO];
+        }
+    }
+}
+
+-(void)recieveResetGameNotification:(NSNotification *)notification {
+    for (UIView * view in self.view.subviews) {
+        if (view.tag==removeDuringPlay) {
+            [view removeFromSuperview];
+        }
+        else if([view isKindOfClass:[UIButton class]]){
+            UIButton * button = (UIButton*)view;
+            [self.gamePieceController setEnabledStateForButton:button];
+        }
     }
 }
 
@@ -189,9 +201,10 @@
     NSString * message;
     
     if (aPlayerWon) {
-        
-        //currentPlayer updates after last move, so value is opposite of winner
         message = [NSString stringWithFormat:@"%@ is the winner", winner];
+    }
+    else{
+        message = [NSString stringWithFormat:@"Cat's game"];
     }
     
     [self updateViewWithMessage:message];
@@ -251,12 +264,9 @@
         if (view.tag==removeDuringPlay) {
             [view removeFromSuperview];
         }
-        else if([view isKindOfClass:[UIButton class]]){
-            UIButton * button = (UIButton*)view;
-            [self.gamePieceController setEnabledStateForButton:button];
-        }
     }
-    
+
+    [self updateViewWithMessage:@"Waiting on other player"];
     [self.socket sendMessage:@"reset" playerID:@"-" moveID:0];
 }
 

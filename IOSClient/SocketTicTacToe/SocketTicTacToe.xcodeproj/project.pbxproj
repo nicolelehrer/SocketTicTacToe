@@ -113,9 +113,9 @@
 		A2FA22C61B6FD529002E5297 /* SocketTicTacToe */ = {
 			isa = PBXGroup;
 			children = (
+				A203BA571B7000ED00DED6CE /* Constants.h */,
 				A203BA601B7131BE00DED6CE /* Game.swift */,
 				A203BA561B7000ED00DED6CE /* SocketInterface.swift */,
-				A203BA571B7000ED00DED6CE /* Constants.h */,
 				A203BA581B7000ED00DED6CE /* GamePieceController.h */,
 				A203BA591B7000ED00DED6CE /* GamePieceController.m */,
 				A203BA5A1B7000ED00DED6CE /* GameViewController.h */,
